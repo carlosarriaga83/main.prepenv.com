@@ -1,0 +1,12 @@
+{
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.29",
+        "twilio/sdk": "^8.3",
+        "guzzlehttp/guzzle": "^7.9",
+        "stripe/stripe-php": "^17.1",
+        "fpdf/fpdf": "^1.86",
+        "setasign/fpdi": "^2.6",
+        "setasign/fpdf": "^1.8",
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "question": "¿Para qué se utiliza principalmente HTML?",
+    "options": [
+      "Estilizar páginas web",
+      "Estructurar contenido web",
+      "Programación del lado del servidor",
+      "Gestión de bases de datos"
+    ],
+    "answer": "Estructurar contenido web"
+  },
+  {
+    "question": "¿Qué propiedad CSS se utiliza para cambiar el color del texto de un elemento?",
+    "options": [
+      "font-color",
+      "text-color",
+      "color",
+      "font-style"
+    ],
+    "answer": "color"
+  },
+  {
+    "question": "¿Qué significa 'DOM' en el desarrollo web?",
+    "options": ["Modelo de Objetos del Documento", "Modelo de Objetos de Datos", "Administrador de Órdenes Digitales", "Creador de Objetos de Detalle"],
+    "answer": "Modelo de Objetos del Documento"
+  }
+]
