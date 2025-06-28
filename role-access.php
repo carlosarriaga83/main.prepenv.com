@@ -1,22 +1,10 @@
 <?php $script = '<script>
                     $(".remove-item-btn").on("click", function() {
-                        //$(this).closest("tr").addClass("d-none")
+                        $(this).closest("tr").addClass("d-none")
                     });
-                    
-                    //let table = new DataTable("#TBL_1");
-                    
-                </script>';
-                
-                
-                
-                ?>
+                </script>';?>
 
-
-    
 <?php include './partials/layouts/layoutTop.php' ?>
-
-
-
 
         <div class="dashboard-main-body">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
@@ -32,157 +20,421 @@
                     <li class="fw-medium">Role & Access</li>
                 </ul>
             </div>
-            
 
+            <div class="card h-100 p-0 radius-12">
+                <div class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center flex-wrap gap-3 justify-content-between">
+                    <div class="d-flex align-items-center flex-wrap gap-3">
+                        <span class="text-md fw-medium text-secondary-light mb-0">Show</span>
+                        <select class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                        </select>
+                        <form class="navbar-search">
+                            <input type="text" class="bg-base h-40-px w-auto" name="search" placeholder="Search">
+                            <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
+                        </form>
+                        <select class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px">
+                            <option>Status</option>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary text-sm btn-sm px-12 py-12 radius-8 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+                        Add New Role
+                    </button>
+                </div>
 
-                    
-								<?php 
-									$T_PARAMS 					= [];
-									$T_PARAMS['DB']['TABLE'] 	= 'ROLES';
-									$T_PARAMS['DB']['COLS'] 	= [ 'NAME', 'DESCRIPTION', 'STATUS'];
-									
-									$T_PARAMS['TABLE']['ID'] 	= 'TBL_1';
-									$T_PARAMS['TABLE']['COLS'] 	= [ 'Name', 'Description', 'Status'];
-									//$T_PARAMS['TABLE']['href'] 	= 'view-event.php';
-									
-									$T_PARAMS['TABLE']['SEARCH_BAR']	 	= true;
-									$T_PARAMS['TABLE']['ADD_NEW']['TEXT'] 	= 'Nuevo Rol';
-									//$T_PARAMS['TABLE']['ADD_NEW']['href'] 	= 'view-event.php';
-									$T_PARAMS['TABLE']['ADD_NEW']['MISC_PROPS'] 	= 'data-bs-toggle="modal" data-bs-target="#Modal_1"';
-									
+                <div class="card-body p-24">
+                    <div class="table-responsive scroll-sm">
+                        <table class="table bordered-table sm-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border input-form-dark" type="checkbox" name="checkbox" id="selectAll">
+                                            </div>
+                                            S.L
+                                        </div>
+                                    </th>
+                                    <th scope="col">Create Date</th>
+                                    <th scope="col">Role </th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col" class="text-center">Status</th>
+                                    <th scope="col" class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            01
+                                        </div>
+                                    </td>
+                                    <td>25 Jan 2024</td>
+                                    <td>Test</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">Active</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            02
+                                        </div>
+                                    </td>
+                                    <td>25 Jan 2024</td>
+                                    <td>Waiter</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-danger-focus text-danger-600 border border-danger-main px-24 py-4 radius-4 fw-medium text-sm">Inactive</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            03
+                                        </div>
+                                    </td>
+                                    <td>10 Feb 2024</td>
+                                    <td>Manager</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">Active</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            04
+                                        </div>
+                                    </td>
+                                    <td>10 Feb 2024</td>
+                                    <td>Project Manager</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">Active</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            05
+                                        </div>
+                                    </td>
+                                    <td>15 March 2024</td>
+                                    <td>Game Developer</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-danger-focus text-danger-600 border border-danger-main px-24 py-4 radius-4 fw-medium text-sm">Inactive</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            06
+                                        </div>
+                                    </td>
+                                    <td>15 March 2024</td>
+                                    <td>Head</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">Active</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            07
+                                        </div>
+                                    </td>
+                                    <td>27 April 2024</td>
+                                    <td>Management</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">Active</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            08
+                                        </div>
+                                    </td>
+                                    <td>27 April 2024</td>
+                                    <td>Waiter</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-danger-focus text-danger-600 border border-danger-main px-24 py-4 radius-4 fw-medium text-sm">Inactive</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            09
+                                        </div>
+                                    </td>
+                                    <td>30 April 2024</td>
+                                    <td>Waiter</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">Active</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10">
+                                            <div class="form-check style-check d-flex align-items-center">
+                                                <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox">
+                                            </div>
+                                            10
+                                        </div>
+                                    </td>
+                                    <td>30 April 2024</td>
+                                    <td>Waiter</td>
+                                    <td>
+                                        <p class="max-w-500-px">Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">Active</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button type="button" class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button type="button" class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-									//echo DB_2_TABLE_V3($T_PARAMS ); 
-
-									include './_ELEMENTS/ROLES/LIST/index.php';
-									
-								?>
-                    
-                    
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-24">
+                        <span>Showing 1 to 10 of 12 entries</span>
+                        <ul class="pagination d-flex flex-wrap align-items-center gap-2 justify-content-center">
+                            <li class="page-item">
+                                <a class="page-link bg-neutral-200 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">
+                                    <iconify-icon icon="ep:d-arrow-left" class=""></iconify-icon>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md bg-primary-600 text-white" href="javascript:void(0)">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link bg-neutral-200 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px" href="javascript:void(0)">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link bg-neutral-200 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link bg-neutral-200 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">4</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link bg-neutral-200 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">5</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link bg-neutral-200 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">
+                                    <iconify-icon icon="ep:d-arrow-right" class=""></iconify-icon>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Modal Start -->
-        <div class="modal fade" id="Modal_1" tabindex="-1" aria-labelledby="Modal_1_LBL" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog modal-dialog-centered">
                 <div class="modal-content radius-16 bg-base">
                     <div class="modal-header py-16 px-24 border border-top-0 border-start-0 border-end-0">
-                        <h1 class="modal-title fs-5" id="Modal_1_LBL">Add New Role</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Role</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-24">
-                        <form id="FRM_1" action="#" FRM="FRM_1" DB="ROLES">
-                            <div class="row">
-                                <div class="col-12  mb-2 " style="justify-content: space-between;">
-                                    <div class="form-switch switch-primary py-12 px-16 radius-8 position-relative mb-2 d-flex"  >
-                                        <div class="d-flex align-items-center gap-2 justify-content-between mb-2 col-10">
-                                            <input type="text" name="EDIT_ID" value="<?php echo ''; ?>" FRM="FRM_1" DB="ROLES" readonly>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between mb-2 col-2">
-                                            <label  class="position-relative w-100 h-100 start-0 top-0 mb-2">Activo</label>
-                                            <input class="form-check-input" type="checkbox" role="switch" id="companzNew" name="STATUS"  >
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        
+                        <form action="#">
                             <div class="row">
                                 <div class="col-12 mb-20">
-                                    <label class="form-label fw-semibold text-primary-light text-sm mb-8">Role Name<span class="text-danger-600">*</span></label>
-                                    <input type="text" class="form-control radius-8" placeholder="Enter Role  Name" name="NAME" required>
+                                    <label class="form-label fw-semibold text-primary-light text-sm mb-8">Role Name</label>
+                                    <input type="text" class="form-control radius-8" placeholder="Enter Role  Name">
                                 </div>
                                 <div class="col-12 mb-20">
                                     <label for="desc" class="form-label fw-semibold text-primary-light text-sm mb-8">Description</label>
-                                    <textarea class="form-control" id="desc" rows="4" cols="50" placeholder="Write some text" name="DESCRIPTION" ></textarea>
+                                    <textarea class="form-control" id="desc" rows="4" cols="50" placeholder="Write some text"></textarea>
                                 </div>
 
-                                <div class="col-12 mb-20 d-flex gap-3">
-                                
-                                    <div class="col-4 mb-20">
-                                        <div class="form-switch switch-primary py-12 px-16 border radius-8 position-relative mb-16">
-                                          
-                                            <label  class="position-relative w-100 h-100 start-0 top-0 mb-24">General</label>
-                                            
-                                                <div class="d-flex align-items-center gap-3 justify-content-between mb-16">
-                                                    <span class="form-check-label line-height-1 fw-medium text-secondary-light">Ver</span>
-
-                                                    
-
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="companzNew" name="CAN_VIEW"  >
-                                                    
-                                                </div>
-                                                <div class="d-flex align-items-center gap-3 justify-content-between mb-16">
-                                                    <span class="form-check-label line-height-1 fw-medium text-secondary-light">Agregar</span>
-
-                                                    
-
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="companzNew" name="CAN_ADD"  >
-                                                </div>
-                                                <div class="d-flex align-items-center gap-3 justify-content-between mb-16">
-                                                    <span class="form-check-label line-height-1 fw-medium text-secondary-light">Editar</span>
-
-                                                    
-
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="companzNew" name="CAN_EDIT"  >
-                                                </div>
-                                                <div class="d-flex align-items-center gap-3 justify-content-between mb-16">
-                                                    <span class="form-check-label line-height-1 fw-medium text-secondary-light">Eliminar</span>
-
-                                                    
-
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="companzNew" name="CAN_DELETE"  >
-                                                </div>
-                                                
+                                <div class="col-12 mb-20">
+                                    <label class="form-label fw-semibold text-primary-light text-sm mb-8">Status </label>
+                                    <div class="d-flex align-items-center flex-wrap gap-28">
+                                        <div class="form-check checked-success d-flex align-items-center gap-2">
+                                            <input class="form-check-input" type="radio" name="label" id="Personal">
+                                            <label class="form-check-label line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1" for="Personal">
+                                                <span class="w-8-px h-8-px bg-success-600 rounded-circle"></span>
+                                                Active
+                                            </label>
                                         </div>
-                                    </div>
-
-                                    <div class="col-4 mb-20">
-                                        <div class="form-switch switch-primary py-12 px-16 border radius-8 position-relative mb-16">
-                                          
-                                            <label  class="position-relative w-100 h-100 start-0 top-0 mb-24">Admin</label>
-                                            
-                                                <div class="d-flex align-items-center gap-3 justify-content-between mb-16">
-                                                    <span class="form-check-label line-height-1 fw-medium text-secondary-light">Ver</span>
-
-                                                    
-
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="companzNew" name="ADMIN_VIEW"  >
-                                                    
-                                                </div>
-                                                <div class="d-flex align-items-center gap-3 justify-content-between mb-16">
-                                                    <span class="form-check-label line-height-1 fw-medium text-secondary-light">Agregar</span>
-
-                                                    
-
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="companzNew" name="ADMIN_ADD"  >
-                                                </div>
-                                                <div class="d-flex align-items-center gap-3 justify-content-between mb-16">
-                                                    <span class="form-check-label line-height-1 fw-medium text-secondary-light">Editar</span>
-
-                                                    
-
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="companzNew" name="ADMIN_EDIT"  >
-                                                </div>
-                                                <div class="d-flex align-items-center gap-3 justify-content-between mb-16">
-                                                    <span class="form-check-label line-height-1 fw-medium text-secondary-light">Eliminar</span>
-
-                                                    
-
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="companzNew" name="ADMIN_DELETE"  >
-                                                </div>
-                                                
+                                        <div class="form-check checked-danger d-flex align-items-center gap-2">
+                                            <input class="form-check-input" type="radio" name="label" id="Holiday">
+                                            <label class="form-check-label line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1" for="Holiday">
+                                                <span class="w-8-px h-8-px bg-danger-600 rounded-circle"></span>
+                                                Inactive
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
-                                
                                 <div class="d-flex align-items-center justify-content-center gap-3 mt-24">
                                     <button type="reset" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-40 py-11 radius-8">
-                                        Reset
+                                        Cancel
                                     </button>
-									<button type="button" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-40 py-11 radius-8" data-bs-dismiss="modal">
-										Close
-									</button>
                                     <button type="submit" class="btn btn-primary border border-primary-600 text-md px-48 py-12 radius-8">
                                         Save
                                     </button>
@@ -196,54 +448,3 @@
         <!-- Modal End -->
 
 <?php include './partials/layouts/layoutBottom.php' ?>
-
-
-<script>	
-	$(document).ready(function() {
-    
-        hideAlertAfterTime($('.alert'), 5000);
-		
-
-        $(document).on('submit','#FRM_1', function VALIDAR(e) { 
-        //$('#formulario').on('submit', function (e) {
-          if (e.isDefaultPrevented()) {
-            // handle the invalid form...
-          } else {
-            // everything looks good!
-            e.preventDefault(); //prevent submit
-            SAVE_CHANGES(this);
-            
-          }
-        });
-        
-
-            
-    });
-
-        function LOAD_ID(id) { 
-        
-            clearForm('FRM_1');
-            
-            $('input[name="EDIT_ID"]').val(id);
-            
-            $('input[name="EDIT_ID"]').trigger( "change" );
-        }
-        
-        
-        $(document).on('change','input[name="EDIT_ID"]', function LOAD(e) { 
-            
-            debugger;
-            var TABLA   = $(this).attr('DB');
-            var FORM    = $(this).attr('FRM');
-            var ID      = $(this).val();
-            
-            OBJ = {};
-            
-            OBJ['ID'] 		= ID;
-            OBJ['TABLA'] 	= TABLA;
-            var resp = POST_API(OBJ, '/API/get_data/');
-    
-            jsonToForm_v2('' + FORM, resp.DATOS.PL[0].Datos)
-        });
-	
-</script>

@@ -1,11 +1,3 @@
-
-<?php
-	
-	
-
-  
-?>
-
 <aside class="sidebar">
     <button type="button" class="sidebar-close-btn">
         <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
@@ -28,167 +20,78 @@
             </li>
             
             
-            <li class="sidebar-menu-group-title">Client</li>
+            <li class="sidebar-menu-group-title">Admin</li>
             
             <li class="dropdown">
                 <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:plane" class="menu-icon"></iconify-icon>
-                    <span>Vuelos</span>
+                    <iconify-icon icon="ic:twotone-event" class="menu-icon"></iconify-icon>
+                    <span>Eventos</span>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li class="view">
-                        <a href="_VUELOS_list.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Vuelos</a>
+                    <li>
+                        <a href="Ver_eventos.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Ver eventos</a>
                     </li>
-
-
+                    <li>
+                        <a href="Nuevo_evento.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Nuevo evento</a>
+                    </li>
 
                 </ul>
             </li>
-            
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:teacher" class="menu-icon"></iconify-icon>
-                    <span>Cursos</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li class="view">
-                        <a href="_CURSOS_licencias.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Licencias</a>
-                    </li>
-                    <li class="view">
-                        <a href="_CURSOS_resultados.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Resultados</a>
-                    </li>
-
-
-                </ul>
-            </li>
-
 					
             <li class="dropdown">
                 <a href="javascript:void(0)">
-                    <iconify-icon icon="fluent-mdl2:product-variant" class="menu-icon"></iconify-icon>
-                    <span>Productos</span>
+                    <iconify-icon icon="mingcute:dish-cover-line" class="menu-icon"></iconify-icon>
+                    <span>Platillos</span>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li class="view">
-                        <a href="_PRODUCTOS_Ver.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Ver productos</a>
+                    <li>
+                        <a href="Ver_platillo.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Ver platillos</a>
                     </li>
-                    <li class="add">
-                        <a href="_PRODUCTOS_edit.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Nuevo producto</a>
+                    <li>
+                        <a href="Nuevo_platillo.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Nuevo platillo</a>
                     </li>
 
                 </ul>
             </li>
-										
 								
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="ix:customer" class="menu-icon"></iconify-icon>
-                    <span>Clientes</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li class="view">
-                        <a href="_EMPRESAS_Ver.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Ver empresas (viejo)</a>
-                    </li>
-                    <li class="view">
-                        <a href="_CLIENTS_Ver.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Ver clientes</a>
-                    </li>
-                    <li class="view">
-                        <a href="_CLIENTS_edit.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Nuevo cliente</a>
-                    </li>
-
-
-                </ul>
-            </li>
-											
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="fa6-solid:file-invoice-dollar" class="menu-icon"></iconify-icon>
-                    <span>Facturas</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li class="view">
-                        <a href="_FACTURAS_Ver.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Ver facturas</a>
-                    </li>
-                    <li class="view">
-                        <a href="_FACTURAS2_DB_new.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Nueva factura</a>
-                    </li>
-
-
-                </ul>
-            </li>
-			
-
-            
-            <li class="sidebar-menu-group-title">Admin</li>
-
             <li class="dropdown">
                 <a href="javascript:void(0)">
                     <i class="ri-user-settings-line text-xl me-6 d-flex w-auto"></i>
                     <span>Usuarios</span>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li class="view">
+                    <li>
                         <a href="users-list.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Users List</a>
                     </li>
-
-                    <li class="admin_add">
-                        <a href="view-profile.php?id="><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add User</a>
+                    <li>
+                        <a href="users-grid.php"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Users Grid</a>
                     </li>
-
-                    <li class="admin_view">
-                        <a href="role-access.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Roles & Access</a>
+                    <li>
+                        <a href="add-user.php"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add User</a>
                     </li>
-
+                    <li>
+                        <a href="view-profile.php"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> View Profile</a>
+                    </li>
+                    <li>
+                        <a href="role-access.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Role & Access</a>
+                    </li>
+                    <li>
+                        <a href="assign-role.php"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Assign Role</a>
+                    </li>
                 </ul>
-                
-                <li class="dropdown">
-                    <a href="javascript:void(0)" class="">
-                        <iconify-icon icon="mingcute:hand-card-line" class="menu-icon"></iconify-icon>
-                        <span>Billing</span>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li class="">
-                            <a href="memberships.php"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Memberships</a>
-                        </li>
-                </li>
-
-
-
-                </ul>
-                
-                
             </li>
 			
-			<li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon"></iconify-icon>
-                    <span>Settings</span>
+
+            <li class="sidebar-menu-group-title">Externo</li>
+
+
+            <li>
+                <a href="gallery.php">
+                    <iconify-icon icon="lsicon:user-crowd-outline" class="menu-icon"></iconify-icon>
+                    <span>Comensales</span>
                 </a>
-                <ul class="sidebar-submenu">
-                    <li class="">
-                        <a href="_COMPANY_edit.php" class=""><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Company</a>
-                    </li>
-                    <li class="d-none" >
-                        <a href="notification.php"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Notification</a>
-                    </li>
-                    <li class="d-none">
-                        <a href="notification-alert.php"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Notification Alert</a>
-                    </li>
-                    <li class="d-none">
-                        <a href="theme.php"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> Theme</a>
-                    </li>
-                    <li class="d-none">
-                        <a href="currencies.php"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> Currencies</a>
-                    </li>
-                    <li class="d-none">
-                        <a href="language.php"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> Languages</a>
-                    </li>
-                    <li class="">
-                        <a href="payment-gateway.php"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> Payment Gateway</a>
-                    </li>
-                </ul>
             </li>
+            
         </ul>
     </div>
 </aside>
-

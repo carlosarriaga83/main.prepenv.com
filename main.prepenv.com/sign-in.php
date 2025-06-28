@@ -18,52 +18,47 @@
                     <a href="index.php" class="mb-40 max-w-290-px">
                         <img src="assets/images/logo.png" alt="">
                     </a>
-                    <h4 class="mb-12">Sign Up to your Account</h4>
+                    <h4 class="mb-12">Sign In to your Account</h4>
                     <p class="mb-32 text-secondary-light text-lg">Welcome back! please enter your detail</p>
                 </div>
-                <form action="#">
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger mb-3">
+                        <?php
+                        if ($_GET['error'] === 'empty') echo 'Please fill in all fields.';
+                        if ($_GET['error'] === 'invalid') echo 'Invalid email or password.';
+                        ?>
+                    </div>
+                <?php endif; ?>
+                <form action="PHP/login.php" method="POST">
                     <div class="icon-field mb-16">
                         <span class="icon top-50 translate-middle-y">
-                            <iconify-icon icon="f7:person"></iconify-icon>
+                            <iconify-icon icon="mdi:phone"></iconify-icon>
                         </span>
-                        <input type="text" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Username">
+                        <input type="text" name="telefono" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Phone Number" required>
                     </div>
-                    <div class="icon-field mb-16">
-                        <span class="icon top-50 translate-middle-y">
-                            <iconify-icon icon="mage:email"></iconify-icon>
-                        </span>
-                        <input type="email" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Email">
-                    </div>
-                    <div class="mb-20">
-                        <div class="position-relative ">
-                            <div class="icon-field">
-                                <span class="icon top-50 translate-middle-y">
-                                    <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
-                                </span>
-                                <input type="password" class="form-control h-56-px bg-neutral-50 radius-12" id="your-password" placeholder="Password">
-                            </div>
-                            <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#your-password"></span>
+                    <div class="position-relative mb-20">
+                        <div class="icon-field">
+                            <span class="icon top-50 translate-middle-y">
+                                <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
+                            </span>
+                            <input type="password" name="password" class="form-control h-56-px bg-neutral-50 radius-12" id="your-password" placeholder="Password" required>
                         </div>
-                        <span class="mt-12 text-sm text-secondary-light">Your password must have at least 8 characters</span>
+                        <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#your-password"></span>
                     </div>
                     <div class="">
                         <div class="d-flex justify-content-between gap-2">
-                            <div class="form-check style-check d-flex align-items-start">
-                                <input class="form-check-input border border-neutral-300 mt-4" type="checkbox" value="" id="condition">
-                                <label class="form-check-label text-sm" for="condition">
-                                    By creating an account means you agree to the
-                                    <a href="javascript:void(0)" class="text-primary-600 fw-semibold">Terms & Conditions</a> and our
-                                    <a href="javascript:void(0)" class="text-primary-600 fw-semibold">Privacy Policy</a>
-                                </label>
+                            <div class="form-check style-check d-flex align-items-center">
+                                <input class="form-check-input border border-neutral-300" type="checkbox" value="" id="remeber">
+                                <label class="form-check-label" for="remeber">Remember me </label>
                             </div>
-
+                            <a href="javascript:void(0)" class="text-primary-600 fw-medium">Forgot Password?</a>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32"> Sign Up</button>
+                    <button type="submit" class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32"> Sign In</button>
 
                     <div class="mt-32 center-border-horizontal text-center">
-                        <span class="bg-base z-1 px-4">Or sign up with</span>
+                        <span class="bg-base z-1 px-4">Or sign in with</span>
                     </div>
                     <div class="mt-32 d-flex align-items-center gap-3">
                         <button type="button" class="fw-semibold text-primary-light py-16 px-24 w-50 border radius-12 text-md d-flex align-items-center justify-content-center gap-12 line-height-1 bg-hover-primary-50">
@@ -76,9 +71,8 @@
                         </button>
                     </div>
                     <div class="mt-32 text-center text-sm">
-                        <p class="mb-0">Already have an account? <a href="sign-in.php" class="text-primary-600 fw-semibold">Sign In</a></p>
+                        <p class="mb-0">Don’t have an account? <a href="sign-up.php" class="text-primary-600 fw-semibold">Sign Up</a></p>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -101,8 +95,8 @@
                         initializePasswordToggle(".toggle-password");
                         // ========================= Password Show Hide Js End ===========================
                     </script>';?>
-
-    <?php include './partials/scripts.php' ?>
+                    
+<?php include './partials/scripts.php' ?>
 
 </body>
 

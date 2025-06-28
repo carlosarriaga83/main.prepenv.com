@@ -335,9 +335,11 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3" href="javascript:void(0)">
-                                            <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out
-                                        </a>
+                                        <form action="PHP/sign-out.php" method="post" style="margin:0;">
+                                            <button type="submit" class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3" style="background:none;border:none;width:100%;text-align:left;">
+                                                <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out
+                                            </button>
+                                        </form>
                                     </li>
                                 </ul>
                             </div>

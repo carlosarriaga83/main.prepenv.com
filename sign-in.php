@@ -1,33 +1,4 @@
 <!-- meta tags and other links -->
-
-<?php 
-    
-    //error_reporting(E_ALL);
-	//ini_set('display_errors', 1);
-	
-	session_start();
-
-	if ($_SESSION['LOGIN'] == 1){
-		header("Location: index.php");	
-	}else{
-		//header("Location: sign-in.php");	
-	}
-
-	include_once './PHP/MYF1.php';
-	
-	header('Content-type: html; charset=utf-8');
-	
-    if ( isset($_SESSION['SIGN_IN']['PROMPT']) ) {
-        $PROMPT = $_SESSION['SIGN_IN']['PROMPT'];
-        $_SESSION['SIGN_IN']['PROMPT'] = '';
-    }
-    if ( isset($_SESSION['SIGN_IN']['EMAIL']))   {$EMAIL = $_SESSION['SIGN_IN']['EMAIL'];    $_SESSION['SIGN_IN']['EMAIL'] = '';}
-    if ( isset($_SESSION['SIGN_IN']['PWD']))     {$PWD   = $_SESSION['SIGN_IN']['PWD'];      $_SESSION['SIGN_IN']['PWD'] = '';}
-
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 
@@ -47,24 +18,22 @@
                     <a href="index.php" class="mb-40 max-w-290-px">
                         <img src="assets/images/logo.png" alt="">
                     </a>
-                    <h4 class="mb-12">Sign In to your Account.</h4>
+                    <h4 class="mb-12">Sign In to your Account</h4>
                     <p class="mb-32 text-secondary-light text-lg">Welcome back! please enter your detail</p>
-                    <?php echo $PROMPT; ?>
-                    
                 </div>
-                <form  method="post" action="API/Login.php">
+                <form action="#">
                     <div class="icon-field mb-16">
                         <span class="icon top-50 translate-middle-y">
                             <iconify-icon icon="mage:email"></iconify-icon>
                         </span>
-                        <input type="email" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Email" name="email" value="<?php echo $EMAIL; ?>" required>
+                        <input type="email" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Email">
                     </div>
                     <div class="position-relative mb-20">
                         <div class="icon-field">
                             <span class="icon top-50 translate-middle-y">
                                 <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
                             </span>
-                            <input type="password" class="form-control h-56-px bg-neutral-50 radius-12" id="your-password" placeholder="Password" name="password" value="<?php echo $PWD; ?>" required>
+                            <input type="password" class="form-control h-56-px bg-neutral-50 radius-12" id="your-password" placeholder="Password">
                         </div>
                         <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#your-password"></span>
                     </div>
@@ -119,21 +88,8 @@
                         initializePasswordToggle(".toggle-password");
                         // ========================= Password Show Hide Js End ===========================
                     </script>';?>
-
-
-<script>
-    $(document).ready(function() {
-
-        // Call the function to hide the alert after 5000 milliseconds (5 seconds)
-        hideAlertAfterTime($('.alert'), 5000);
-
-
-    });
-</script>
-   
+                    
 <?php include './partials/scripts.php' ?>
-
-
 
 </body>
 

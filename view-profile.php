@@ -1,48 +1,16 @@
 <?php $script ='<script>
     // ======================== Upload Image Start =====================
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var img = new Image();
-            img.onload = function() {
-                var canvas = document.createElement("canvas");
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0);
-
-                var MAX_WIDTH = 800;
-                var MAX_HEIGHT = 600;
-                var width = img.width;
-                var height = img.height;
-
-                if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-                }
-                canvas.width = width;
-                canvas.height = height;
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0, width, height);
-
-                var dataurl = canvas.toDataURL("image/png");
-
-                $("#imagePreview").css("background-image", "url(" + dataurl + ")");
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $("#imagePreview").css("background-image", "url(" + e.target.result + ")");
                 $("#imagePreview").hide();
                 $("#imagePreview").fadeIn(650);
-                $("#AVATAR_PIC").prop("src",dataurl);
             }
-            img.src = e.target.result;
+            reader.readAsDataURL(input.files[0]);
         }
-        reader.readAsDataURL(input.files[0]);
     }
-}
     $("#imageUpload").change(function() {
         readURL(this);
     });
@@ -66,47 +34,6 @@ function readURL(input) {
     </script>';?>
 
 <?php include './partials/layouts/layoutTop.php' ?>
-<?php 	
-    //error_reporting(E_ALL);
-	//ini_set('display_errors', 1);
-    
-    
-    //session_start(); 
-    
-    include_once './PHP/MYF1.php';
-    
-    if (isset($_GET['id'])) {
-        $id = $_GET['id'];
-        //echo "Name: " . htmlspecialchars($name); // Use htmlspecialchars to prevent XSS
-    }else{
-        //$id = $_SESSION['USER']['ID'];
-    }
-    
-	$q = sprintf("SELECT * FROM Users WHERE id = '%s'   ", $id );  // echo $q . "\n";
-	$R1 = SQL_2_OBJ_V2($q);
-	//print_r($R1);die;
-	
-	$DB_USER 	= $R1['PL'][0];
-    
-    
-    /// OPCIONES DE DROPDOWN
-    
-        $q = sprintf("SELECT * FROM ROLES " );  // echo $q . "\n";
-        $R1 = SQL_2_OBJ_V2($q);
-        //print_r($R1);die;
-        
-        $ROLES 	= $R1['PL'];
-        
-        foreach($ROLES as $ROL){
-            $ROL_ID_NAME[$ROL['ID']] = $ROL['NAME'];
-        }
-        
-
-    
-    
-?>
-
-
 
         <div class="dashboard-main-body">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
@@ -126,40 +53,43 @@ function readURL(input) {
             <div class="row gy-4">
                 <div class="col-lg-4">
                     <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base h-100">
-                        <img src="IMAGES/BG/FABRIC.webp" alt="" class="w-100 object-fit-cover" style="height: 145px;">
+                        <img src="assets/images/user-grid/user-grid-bg1.png" alt="" class="w-100 object-fit-cover">
                         <div class="pb-24 ms-16 mb-24 me-16  mt--100">
                             <div class="text-center border border-top-0 border-start-0 border-end-0">
-                                <img src="<?php echo $DB_USER['AVATAR_PIC']; ?>" alt="" class="border br-white border-width-2-px w-200-px h-200-px rounded-circle object-fit-cover">
-                                <h6 class="mb-0 mt-16"><?php echo $DB_USER['NAME']; ?></h6>
-                                <span class="text-secondary-light mb-16"><?php echo $DB_USER['EMAIL']; ?></span>
+                                <img src="assets/images/user-grid/user-grid-img14.png" alt="" class="border br-white border-width-2-px w-200-px h-200-px rounded-circle object-fit-cover">
+                                <h6 class="mb-0 mt-16">Jacob Jones</h6>
+                                <span class="text-secondary-light mb-16">ifrandom@gmail.com</span>
                             </div>
                             <div class="mt-24">
                                 <h6 class="text-xl mb-16">Personal Info</h6>
                                 <ul>
-
-                                    <li class="d-flex align-items-center gap-1 mb-12">
-                                        <span class="w-30 text-md fw-semibold text-primary-light">User Id</span>
-                                        <span class="w-70 text-secondary-light fw-medium">: <?php echo $DB_USER['ID']; ?></span>
-                                    </li>
                                     <li class="d-flex align-items-center gap-1 mb-12">
                                         <span class="w-30 text-md fw-semibold text-primary-light">Full Name</span>
-                                        <span class="w-70 text-secondary-light fw-medium">: <?php echo $DB_USER['NAME']; ?></span>
+                                        <span class="w-70 text-secondary-light fw-medium">: Will Jonto</span>
                                     </li>
                                     <li class="d-flex align-items-center gap-1 mb-12">
                                         <span class="w-30 text-md fw-semibold text-primary-light"> Email</span>
-                                        <span class="w-70 text-secondary-light fw-medium">: <?php echo $DB_USER['EMAIL']; ?></span>
+                                        <span class="w-70 text-secondary-light fw-medium">: willjontoax@gmail.com</span>
                                     </li>
                                     <li class="d-flex align-items-center gap-1 mb-12">
                                         <span class="w-30 text-md fw-semibold text-primary-light"> Phone Number</span>
-                                        <span class="w-70 text-secondary-light fw-medium">: <?php echo $DB_USER['PHONE']; ?></span>
+                                        <span class="w-70 text-secondary-light fw-medium">: (1) 2536 2561 2365</span>
                                     </li>
                                     <li class="d-flex align-items-center gap-1 mb-12">
-                                        <span class="w-30 text-md fw-semibold text-primary-light"> Rol</span>
-                                        <span class="w-70 text-secondary-light fw-medium">: <?php echo $ROL_ID_NAME[$DB_USER['ROLE_ID']]; ?></span>
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Department</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: Design</span>
                                     </li>
                                     <li class="d-flex align-items-center gap-1 mb-12">
-                                        <span class="w-30 text-md fw-semibold text-primary-light"> Description</span>
-                                        <span class="w-70 text-secondary-light fw-medium">: <?php echo $DB_USER['DESCRIPCION']; ?></span>
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Designation</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: UI UX Designer</span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-1 mb-12">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Languages</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: English</span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-1">
+                                        <span class="w-30 text-md fw-semibold text-primary-light"> Bio</span>
+                                        <span class="w-70 text-secondary-light fw-medium">: Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
                                     </li>
                                 </ul>
                             </div>
@@ -206,81 +136,69 @@ function readURL(input) {
                                         </div>
                                     </div>
                                     <!-- Upload Image End -->
-                                    <form id="FRM_USER_PROFILE" action="#" FRM="FRM_USER_PROFILE" DB="Users">
-										<input type="text" name="EDIT_ID" value="<?php echo $DB_USER['ID']; ?>" readonly>
-										<img id="AVATAR_PIC" name="AVATAR_PIC" src="<?php echo $DB_USER['AVATAR_PIC']; ?>" class="mb-24 mt-16" hidden></img>
+                                    <form action="#">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="mb-20">
                                                     <label for="name" class="form-label fw-semibold text-primary-light text-sm mb-8">Full Name <span class="text-danger-600">*</span></label>
-                                                    <input type="text" class="form-control radius-8" id="name" placeholder="Enter Full Name"  name="NAME"  value="<?php echo $DB_USER['NAME']; ?>" required='required'>
+                                                    <input type="text" class="form-control radius-8" id="name" placeholder="Enter Full Name">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
-                                                    <?php 
-                                                        if ( $DB_USER['EMAIL'] == '' ){
-                                                            $READ_ONLY = '';
-                                                            //$WAS_VALIDATED = ' was-validated';
-                                                        } else {
-                                                            $READ_ONLY = ' readonly';
-                                                            //$WAS_VALIDATED = '';
-                                                        }
-
-                                                    ?>
-                                                <div class="mb-20 <?php echo $WAS_VALIDATED; ?>">
+                                                <div class="mb-20">
                                                     <label for="email" class="form-label fw-semibold text-primary-light text-sm mb-8">Email <span class="text-danger-600">*</span></label>
-
-
-
-                                                    <input type="email" class="form-control radius-8" id="email" placeholder="Enter email address" name="EMAIL" value="<?php echo $DB_USER['EMAIL']; ?>" <?php echo $READ_ONLY; ?> required>
+                                                    <input type="email" class="form-control radius-8" id="email" placeholder="Enter email address">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="mb-20">
                                                     <label for="number" class="form-label fw-semibold text-primary-light text-sm mb-8">Phone</label>
-                                                    <input type="phone" class="form-control radius-8" id="number" placeholder="Enter phone number" name="PHONE" value="<?php echo $DB_USER['PHONE']; ?>">
+                                                    <input type="email" class="form-control radius-8" id="number" placeholder="Enter phone number">
                                                 </div>
                                             </div>
-
-                                            <div class="col-sm-6 admin_view">
+                                            <div class="col-sm-6">
                                                 <div class="mb-20">
-                                                    <label for="Role" class="form-label fw-semibold text-primary-light text-sm mb-8">Role <span class="text-danger-600">*</span> </label>
-                                                    <select class="form-control radius-8 form-select" id="Role" name="ROLE_ID" required >
-                                                    
-                                                        <?php
-                                                            $HTML_OUT = '<option value="0"> </option>';
-                                                            foreach( $ROLES as $ROL){
-                                                                $DB_USER['ROLE_ID'] ==  $ROL['ID'] ? $SELECTED = 'selected' : $SELECTED = '';
-                                                                $ROL['ID'] == '777' ? $SA_ONLY = 'sa_only' : $SA_ONLY = '';
-                                                                $HTML_OUT .= sprintf( '<option class="%s" value="%s" %s> %s</option>',$SA_ONLY, $ROL['ID'], $SELECTED,  $ROL['NAME']);
-                                                                
-                                                            }
-                                                            
-                                                            echo $HTML_OUT;
-                                                        
-                                                        
-                                                        ?>
-                                                        
+                                                    <label for="depart" class="form-label fw-semibold text-primary-light text-sm mb-8">Department <span class="text-danger-600">*</span> </label>
+                                                    <select class="form-control radius-8 form-select" id="depart">
+                                                        <option>Enter Event Title </option>
+                                                        <option>Enter Event Title One </option>
+                                                        <option>Enter Event Title Two</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            
-
-                                            
+                                            <div class="col-sm-6">
+                                                <div class="mb-20">
+                                                    <label for="desig" class="form-label fw-semibold text-primary-light text-sm mb-8">Designation <span class="text-danger-600">*</span> </label>
+                                                    <select class="form-control radius-8 form-select" id="desig">
+                                                        <option>Enter Designation Title </option>
+                                                        <option>Enter Designation Title One </option>
+                                                        <option>Enter Designation Title Two</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="mb-20">
+                                                    <label for="Language" class="form-label fw-semibold text-primary-light text-sm mb-8">Language <span class="text-danger-600">*</span> </label>
+                                                    <select class="form-control radius-8 form-select" id="Language">
+                                                        <option> English</option>
+                                                        <option> Bangla </option>
+                                                        <option> Hindi</option>
+                                                        <option> Arabic</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="col-sm-12">
                                                 <div class="mb-20">
                                                     <label for="desc" class="form-label fw-semibold text-primary-light text-sm mb-8">Description</label>
-                                                    <textarea class="form-control radius-8" id="desc" placeholder="Write description..." name="DESCRIPCION" ><?php echo $DB_USER['DESCRIPCION']; ?></textarea>
+                                                    <textarea name="#0" class="form-control radius-8" id="desc" placeholder="Write description..."></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-center justify-content-center gap-3">
-                                            <a href="users-list.php">
-                                                <button type="button" href="./users-list.php" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">
-                                                    Return
-                                                </button>
-                                            </a>
-                                            <button type="submit" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8" onclick="" >
+                                            <button type="button" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">
+                                                Cancel
+                                            </button>
+                                            <button type="button" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
                                                 Save
                                             </button>
                                         </div>
@@ -288,31 +206,20 @@ function readURL(input) {
                                 </div>
 
                                 <div class="tab-pane fade" id="pills-change-passwork" role="tabpanel" aria-labelledby="pills-change-passwork-tab" tabindex="0">
-                                    <form id="FRM_USER_PROFILE_PWD" action="#" FRM="FRM_USER_PROFILE_PWD" DB="Users">
-                                    <input type="text" name="EDIT_ID" value="<?php echo $DB_USER['ID']; ?>" readonly>
-                                   
-                                        <div class="mb-20">
-                                            <label for="your-password" class="form-label fw-semibold text-primary-light text-sm mb-8">New Password <span class="text-danger-600">*</span></label>
-                                            <div class="position-relative">
-                                                <input type="password" class="form-control radius-8" id="your-password" placeholder="Enter New Password*" name="PWD" required>
-                                                <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#your-password"></span>
-                                            </div>
+                                    <div class="mb-20">
+                                        <label for="your-password" class="form-label fw-semibold text-primary-light text-sm mb-8">New Password <span class="text-danger-600">*</span></label>
+                                        <div class="position-relative">
+                                            <input type="password" class="form-control radius-8" id="your-password" placeholder="Enter New Password*">
+                                            <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#your-password"></span>
                                         </div>
-                                        <div class="mb-20">
-                                            <label for="confirm-password" class="form-label fw-semibold text-primary-light text-sm mb-8">Confirmed Password <span class="text-danger-600">*</span></label>
-                                            <div class="position-relative">
-                                                <input type="password" class="form-control radius-8" id="confirm-password" placeholder="Confirm Password*" name="PWD2" required>
-                                                <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#confirm-password"></span>
-                                            </div>
+                                    </div>
+                                    <div class="mb-20">
+                                        <label for="confirm-password" class="form-label fw-semibold text-primary-light text-sm mb-8">Confirmed Password <span class="text-danger-600">*</span></label>
+                                        <div class="position-relative">
+                                            <input type="password" class="form-control radius-8" id="confirm-password" placeholder="Confirm Password*">
+                                            <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#confirm-password"></span>
                                         </div>
-                                        
-                                        <div class="d-flex align-items-center justify-content-center gap-3">
-
-                                            <button type="submit" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8" onclick="" >
-                                                Save
-                                            </button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
 
                                 <div class="tab-pane fade" id="pills-notification" role="tabpanel" aria-labelledby="pills-notification-tab" tabindex="0">
@@ -361,89 +268,3 @@ function readURL(input) {
         </div>
 
 <?php include './partials/layouts/layoutBottom.php' ?>
-
-<script>	
-	$(document).ready(function() {
-    
-        hideAlertAfterTime($('.alert'), 5000);
-		
-		$("#imagePreview").css("background-image", "url( <?php echo $DB_USER['AVATAR_PIC']; ?> )");
-        
-        $(document).on('submit','#FRM_USER_PROFILE', function VALIDAR(e) { 
-        //$('#formulario').on('submit', function (e) {
-          if (e.isDefaultPrevented()) {
-            // handle the invalid form...
-          } else {
-            // everything looks good!
-            e.preventDefault(); //prevent submit
-            SAVE_CHANGES(this);
-            
-          }
-        });
-        
-        $(document).on('submit','#FRM_USER_PROFILE_PWD', function VALIDAR(e) { 
-        //$('#formulario').on('submit', function (e) {
-          if (e.isDefaultPrevented()) {
-            // handle the invalid form...
-          } else {
-            // everything looks good!
-            e.preventDefault(); //prevent submit
-            var PWD = $('input[name="PWD"]').val();
-            var PWD2 = $('input[name="PWD2"]').val();
-            //$('input[name="PWD"]').val(PWD1);
-            
-            debugger;
-            if ( PWD == PWD2){
-                SAVE_CHANGES(this);
-            }
-          }
-        });
-        
-            
-    });
-
-
-	
-</script>
-
-<script>
-
-
-
-    // Usage example:
-$('input[name="EMAIL"]').on('blur change', function() {
-        debugger;
-
-        OBJ = {};
-        
-        
-        OBJ['TABLA']         = 'Users';
-        OBJ['SEARCH_FOR']    = $(this).val();
-
-        debugger;
-        var resp = POST_API(OBJ, 'API/does_exist/');
-        debugger;
-
-        if (resp.DATOS == 0){ 
-            var VALIDATED_DIV = $('input[name="EMAIL"]').closest( "div" );
-            //VALIDATED_DIV.addClass('was-validated'); //.css( "background-color", "green" );
-            $('input[name="EMAIL"]').addClass( 'bg-success-focus' ).removeClass( 'bg-danger-focus' );
-            //debugger;
-            $('button[type="submit"]').prop('disabled',false);
-
-        }else{
-            var VALIDATED_DIV = $('input[name="EMAIL"]').closest( "div" );
-            //VALIDATED_DIV.removeClass('was-validated'); //
-            $('input[name="EMAIL"]').addClass( 'bg-danger-focus' ).removeClass( 'bg-success-focus' );
-            //debugger;
-            $('button[type="submit"]').prop('disabled',true);
-
-        }
-
-        if ( $('input[name="EMAIL"]').val() == '' ) { $('input[name="EMAIL"]').removeClass( 'bg-success-focus' ).removeClass( 'bg-danger-focus' ); }
-
-
-    });
-
-
-</script>

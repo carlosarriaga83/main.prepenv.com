@@ -17,7 +17,6 @@
     // ================== Image Upload Js End ===========================
     </script>';?>
 
-
 <?php include './partials/layouts/layoutTop.php' ?>
 
         <div class="dashboard-main-body">
@@ -43,13 +42,11 @@
                                 <div class="card-body">
                                     <h6 class="text-md text-primary-light mb-16">Profile Image</h6>
 
-                                    <form id="FRM_NEW_USER" action="#">
-									<input type="text" value="" hidden name="EDIT_ID">
                                     <!-- Upload Image Start -->
                                     <div class="mb-24 mt-16">
                                         <div class="avatar-upload">
                                             <div class="avatar-edit position-absolute bottom-0 end-0 me-24 mt-16 z-1 cursor-pointer">
-                                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" hidden name="USER_PIC">
+                                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" hidden>
                                                 <label for="imageUpload" class="w-32-px h-32-px d-flex justify-content-center align-items-center bg-primary-50 text-primary-600 border border-primary-600 bg-hover-primary-100 text-lg rounded-circle">
                                                     <iconify-icon icon="solar:camera-outline" class="icon"></iconify-icon>
                                                 </label>
@@ -61,17 +58,18 @@
                                     </div>
                                     <!-- Upload Image End -->
 
+                                    <form action="#">
                                         <div class="mb-20">
                                             <label for="name" class="form-label fw-semibold text-primary-light text-sm mb-8">Full Name <span class="text-danger-600">*</span></label>
-                                            <input type="text" class="form-control radius-8" id="name" placeholder="Enter Full Name" name="NOMBRE">
+                                            <input type="text" class="form-control radius-8" id="name" placeholder="Enter Full Name">
                                         </div>
                                         <div class="mb-20">
                                             <label for="email" class="form-label fw-semibold text-primary-light text-sm mb-8">Email <span class="text-danger-600">*</span></label>
-                                            <input type="email" class="form-control radius-8" id="email" placeholder="Enter email address" name="EMAIL">
+                                            <input type="email" class="form-control radius-8" id="email" placeholder="Enter email address">
                                         </div>
                                         <div class="mb-20">
                                             <label for="number" class="form-label fw-semibold text-primary-light text-sm mb-8">Phone</label>
-                                            <input type="email" class="form-control radius-8" id="number" placeholder="Enter phone number" name="PHONE">
+                                            <input type="email" class="form-control radius-8" id="number" placeholder="Enter phone number">
                                         </div>
                                         <div class="mb-20">
                                             <label for="depart" class="form-label fw-semibold text-primary-light text-sm mb-8">Department <span class="text-danger-600">*</span> </label>
@@ -91,13 +89,13 @@
                                         </div>
                                         <div class="mb-20">
                                             <label for="desc" class="form-label fw-semibold text-primary-light text-sm mb-8">Description</label>
-                                            <textarea name="#0" class="form-control radius-8" id="desc" placeholder="Write description..."  name="DESCRIPCION"></textarea>
+                                            <textarea name="#0" class="form-control radius-8" id="desc" placeholder="Write description..."></textarea>
                                         </div>
                                         <div class="d-flex align-items-center justify-content-center gap-3">
                                             <button type="button" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">
                                                 Cancel
                                             </button>
-                                            <button type="submit" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8" onclick="FN_NUEVO_USUARIO(this);" FRM="FRM_NEW_USER" DB="Users">
+                                            <button type="submit" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
                                                 Save
                                             </button>
                                         </div>
@@ -111,12 +109,3 @@
         </div>
 
 <?php include './partials/layouts/layoutBottom.php' ?>
-
-<script>	
-	$(document).ready(function() {
-
-		$("button").click(function(event){
-			event.preventDefault();
-		});
-	});
-</script>
