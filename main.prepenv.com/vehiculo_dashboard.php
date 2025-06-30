@@ -112,9 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_vehicle'])) {
                             <h5 class="card-title"><?= htmlspecialchars($vehiculo['alias'] ?: $vehiculo['matricula']) ?></h5>
                             <p class="card-text">Matrícula: <?= htmlspecialchars($vehiculo['matricula']) ?></p>
                         </div>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center gap-10 justify-content-center">
                             <button 
-                                class="btn p-0 text-warning me-2" 
+                                type="button"
+                                class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle"
                                 title="Editar"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editVehiculoModal"
@@ -122,16 +123,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_vehicle'])) {
                                 data-matricula="<?= htmlspecialchars($vehiculo['matricula']) ?>"
                                 data-alias="<?= htmlspecialchars($vehiculo['alias']) ?>"
                             >
-                                <iconify-icon icon="mdi:pencil" class="icon text-lg"></iconify-icon>
+                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
                             </button>
                             <button 
-                                class="btn p-0 text-danger" 
+                                type="button"
+                                class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle"
                                 title="Eliminar"
                                 data-bs-toggle="modal"
                                 data-bs-target="#deleteVehiculoModal"
                                 data-id="<?= htmlspecialchars($vehiculo['id']) ?>"
                             >
-                                <iconify-icon icon="mdi:trash-can" class="icon text-lg"></iconify-icon>
+                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
                             </button>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 <?php
 session_start();
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL);
 
 if (!isset($_SESSION['LOGIN']) || $_SESSION['LOGIN'] != 1) {
     header('Location: sign-in.php');
@@ -36,15 +36,22 @@ if (!isset($pdo) || !$pdo) {
     // Fetch vehicles for select options
     $vehiculos = [];
     try {
+        // Use correct columns from vehiculos_usuario table: id, id_usuario, matricula, alias
         $stmt = $pdo->prepare("SELECT id, matricula, alias FROM vehiculos_usuario WHERE id_usuario = ?");
         $stmt->execute([$user_id]);
         $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {}
 
-    // Fetch estacionamientos for select options
+    // Fetch estacionamientos for select options (only those registered by the user)
     $estacionamientos = [];
     try {
-        $stmt = $pdo->query("SELECT id, nombre FROM estacionamientos");
+        $stmt = $pdo->prepare("
+            SELECT pl.id, pl.name 
+            FROM parking_lots pl
+            INNER JOIN user_parking_access upa ON upa.parking_id = pl.id
+            WHERE upa.user_id = ?
+        ");
+        $stmt->execute([$user_id]);
         $estacionamientos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {}
 }
@@ -63,12 +70,122 @@ if (!isset($pdo) || !$pdo) {
             <li>-</li>
             <li class="fw-medium">Reservas</li>
         </ul>
+
+
+
+
     </div>
+
+        <div class="row justify-content-center gy-4">
+
+            <!-- Reservations Table -->
+
+            <div class="col-lg-10">
+                <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="card-title mb-0">Reservaciones</h5>
+                    <button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addReservaModal">Agregar Reserva</button>
+                </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table bordered-table mb-0 col-12">
+    <thead>
+        <tr class="border-primary-600">
+            <th>Reserva</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($reservas as $res): ?>
+        <tr>
+            <td>
+                <div style="display: grid; grid-template-columns: 110px 1fr; gap: 0.25rem;">
+                    <div><strong>Entrada:</strong></div>
+                    <div><?= htmlspecialchars(date('Y-m-d', strtotime($res['fecha_hora_entrada']))) ?> <?= htmlspecialchars(date('H:i', strtotime($res['fecha_hora_entrada']))) ?></div>
+                    <div><strong>Salida:</strong></div>
+                    <div>
+                        <?php if ($res['fecha_hora_salida']): ?>
+                            <?= htmlspecialchars(date('Y-m-d', strtotime($res['fecha_hora_salida']))) ?> <?= htmlspecialchars(date('H:i', strtotime($res['fecha_hora_salida']))) ?>
+                        <?php else: ?>
+                            -
+                        <?php endif; ?>
+                    </div>
+                    <div><strong>Est.:</strong></div>
+                    <div>
+                        <?php
+                        $est = array_filter($estacionamientos, fn($e) => $e['id'] == $res['parking_id']);
+                        echo htmlspecialchars($est ? reset($est)['name'] : '');
+                        ?>
+                    </div>
+                    <div><strong>Vehículo:</strong></div>
+                    <div><?= htmlspecialchars($res['matricula']) ?></div>
+                </div>
+            </td>
+            <td>
+                <?php
+                $estado = $res['estado'];
+                if ($estado === 'asignado') {
+                    echo '<span class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">' . htmlspecialchars($estado) . '</span>';
+                } else {
+                    echo '<span class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">' . htmlspecialchars($estado) . '</span>';
+                }
+                ?>
+            </td>
+            <td>
+                <div class="d-flex align-items-center gap-10 justify-content-center">
+                    <button 
+                        type="button"
+                        class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editReservaModal"
+                        data-id="<?= $res['id'] ?>"
+                        data-fecha="<?= isset($res['fecha']) ? htmlspecialchars($res['fecha']) : htmlspecialchars(date('Y-m-d', strtotime($res['fecha_hora_entrada']))) ?>"
+                        data-hora_inicio="<?= isset($res['hora_inicio']) ? htmlspecialchars($res['hora_inicio']) : htmlspecialchars(date('H:i', strtotime($res['fecha_hora_entrada']))) ?>"
+                        data-hora_fin="<?= isset($res['hora_fin']) ? htmlspecialchars($res['hora_fin']) : ($res['fecha_hora_salida'] ? htmlspecialchars(date('H:i', strtotime($res['fecha_hora_salida']))) : '') ?>"
+                        data-id_estacionamiento="<?= isset($res['id_estacionamiento']) ? htmlspecialchars($res['id_estacionamiento']) : htmlspecialchars($res['parking_id']) ?>"
+                        data-id_vehiculo="<?php
+                            // Find the vehicle id for this reservation by matching matricula
+                            $veh_id = '';
+                            foreach ($vehiculos as $veh) {
+                                if ($veh['matricula'] === $res['matricula']) {
+                                    $veh_id = $veh['id'];
+                                    break;
+                                }
+                            }
+                            echo htmlspecialchars($veh_id);
+                        ?>"
+                        title="Editar"
+                    >
+                        <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                    </button>
+                    <button 
+                        type="button"
+                        class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteReservaModal"
+                        data-id="<?= $res['id'] ?>"
+                        title="Eliminar"
+                    >
+                        <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
 </div>
 
-<div class="mb-4">
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReservaModal">Agregar Reserva</button>
-</div>
+
 
 <?php if ($error): ?>
     <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
@@ -88,7 +205,11 @@ if (!isset($pdo) || !$pdo) {
       <div class="modal-body">
         <div class="mb-3">
           <label for="fecha" class="form-label">Fecha</label>
-          <input type="date" class="form-control" id="fecha" name="fecha" required>
+          <div class="d-flex align-items-center gap-2">
+            <input type="date" class="form-control" id="fecha" name="fecha" required>
+            <button type="button" id="btn-hoy" class="btn btn-outline-primary btn-sm">Hoy</button>
+            <button type="button" id="btn-manana" class="btn btn-outline-primary btn-sm">Mañana</button>
+          </div>
         </div>
         <div class="mb-3">
           <label for="hora_inicio" class="form-label">Hora Inicio</label>
@@ -103,7 +224,7 @@ if (!isset($pdo) || !$pdo) {
           <select class="form-select" id="id_estacionamiento" name="id_estacionamiento" required>
             <option value="">Selecciona uno</option>
             <?php foreach ($estacionamientos as $est): ?>
-                <option value="<?= $est['id'] ?>"><?= htmlspecialchars($est['nombre']) ?></option>
+                <option value="<?= $est['id'] ?>"><?= htmlspecialchars($est['name']) ?></option>
             <?php endforeach; ?>
           </select>
         </div>
@@ -152,7 +273,7 @@ if (!isset($pdo) || !$pdo) {
           <select class="form-select" id="edit_id_estacionamiento" name="edit_id_estacionamiento" required>
             <option value="">Selecciona uno</option>
             <?php foreach ($estacionamientos as $est): ?>
-                <option value="<?= $est['id'] ?>"><?= htmlspecialchars($est['nombre']) ?></option>
+                <option value="<?= $est['id'] ?>"><?= htmlspecialchars($est['name']) ?></option>
             <?php endforeach; ?>
           </select>
         </div>
@@ -161,7 +282,9 @@ if (!isset($pdo) || !$pdo) {
           <select class="form-select" id="edit_id_vehiculo" name="edit_id_vehiculo" required>
             <option value="">Selecciona uno</option>
             <?php foreach ($vehiculos as $veh): ?>
-                <option value="<?= $veh['id'] ?>"><?= htmlspecialchars($veh['alias'] ?: $veh['matricula']) ?></option>
+                <option value="<?= $veh['id'] ?>">
+                    <?= htmlspecialchars(($veh['alias'] ? $veh['alias'] . ' - ' : '') . $veh['matricula']) ?>
+                </option>
             <?php endforeach; ?>
           </select>
         </div>
@@ -194,83 +317,157 @@ if (!isset($pdo) || !$pdo) {
   </div>
 </div>
 
-<!-- Reservations Table -->
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Fecha Entrada</th>
-                <th>Hora Entrada</th>
-                <th>Fecha Salida</th>
-                <th>Hora Salida</th>
-                <th>Estacionamiento</th>
-                <th>Vehículo</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($reservas as $res): ?>
-            <tr>
-                <td><?= htmlspecialchars(date('Y-m-d', strtotime($res['fecha_hora_entrada']))) ?></td>
-                <td><?= htmlspecialchars(date('H:i', strtotime($res['fecha_hora_entrada']))) ?></td>
-                <td>
-                    <?= $res['fecha_hora_salida'] ? htmlspecialchars(date('Y-m-d', strtotime($res['fecha_hora_salida']))) : '-' ?>
-                </td>
-                <td>
-                    <?= $res['fecha_hora_salida'] ? htmlspecialchars(date('H:i', strtotime($res['fecha_hora_salida']))) : '-' ?>
-                </td>
-                <td>
-                    <?php
-                    $est = array_filter($estacionamientos, fn($e) => $e['id'] == $res['parking_id']);
-                    echo htmlspecialchars($est ? reset($est)['nombre'] : '');
-                    ?>
-                </td>
-                <td>
-                    <?= htmlspecialchars($res['matricula']) ?>
-                </td>
-                <td>
-                    <button 
-                        class="btn p-0 text-warning me-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editReservaModal"
-                        data-id="<?= $res['id'] ?>"
-                        data-fecha="<?= $res['fecha'] ?>"
-                        data-hora_inicio="<?= $res['hora_inicio'] ?>"
-                        data-hora_fin="<?= $res['hora_fin'] ?>"
-                        data-id_estacionamiento="<?= $res['id_estacionamiento'] ?>"
-                        data-id_vehiculo="<?= $res['id_vehiculo'] ?>"
-                        title="Editar"
-                    >
-                        <iconify-icon icon="mdi:pencil" class="icon text-lg"></iconify-icon>
-                    </button>
-                    <button 
-                        class="btn p-0 text-danger"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteReservaModal"
-                        data-id="<?= $res['id'] ?>"
-                        title="Eliminar"
-                    >
-                        <iconify-icon icon="mdi:trash-can" class="icon text-lg"></iconify-icon>
-                    </button>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+
+
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    // Prepare estacionamientos for JS
+    var estacionamientos = <?php echo json_encode($estacionamientos); ?>;
+    // Prepare vehiculos for JS
+    var vehiculos = <?php echo json_encode($vehiculos); ?>;
+
+    // Add modal: populate estacionamientos select on show
+    var addModal = document.getElementById('addReservaModal');
+    addModal.addEventListener('show.bs.modal', function () {
+        var select = document.getElementById('id_estacionamiento');
+        select.innerHTML = '<option value="">Selecciona uno</option>';
+        estacionamientos.forEach(function(est) {
+            var option = document.createElement('option');
+            option.value = est.id;
+            option.textContent = est.name;
+            select.appendChild(option);
+        });
+        // Populate vehiculos select with alias and matricula
+        var vehiculoSelect = document.getElementById('id_vehiculo');
+        vehiculoSelect.innerHTML = '<option value="">Selecciona uno</option>';
+        vehiculos.forEach(function(veh) {
+            var option = document.createElement('option');
+            option.value = veh.id;
+            option.textContent = (veh.alias ? veh.alias + ' - ' : '') + veh.matricula;
+            vehiculoSelect.appendChild(option);
+        });
+        // Set fecha to today by default
+        var fechaInput = document.getElementById('fecha');
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var dd = String(today.getDate()).padStart(2, '0');
+        fechaInput.value = yyyy + '-' + mm + '-' + dd;
+
+        // Remove toggle from both buttons
+        document.getElementById('btn-hoy').classList.remove('btn-primary');
+        document.getElementById('btn-hoy').classList.add('btn-outline-primary');
+        document.getElementById('btn-manana').classList.remove('btn-primary');
+        document.getElementById('btn-manana').classList.add('btn-outline-primary');
+        // Set toggle to "Hoy"
+        document.getElementById('btn-hoy').classList.add('btn-primary');
+        document.getElementById('btn-hoy').classList.remove('btn-outline-primary');
+    });
+
+    // Shortcut buttons for fecha in Add Reserva Modal
+    var btnHoy = document.getElementById('btn-hoy');
+    var btnManana = document.getElementById('btn-manana');
+    var fechaInput = document.getElementById('fecha');
+    if (btnHoy && btnManana && fechaInput) {
+        btnHoy.addEventListener('click', function () {
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var dd = String(today.getDate()).padStart(2, '0');
+            fechaInput.value = yyyy + '-' + mm + '-' + dd;
+            btnHoy.classList.add('btn-primary');
+            btnHoy.classList.remove('btn-outline-primary');
+            btnManana.classList.remove('btn-primary');
+            btnManana.classList.add('btn-outline-primary');
+        });
+        btnManana.addEventListener('click', function () {
+            var manana = new Date();
+            manana.setDate(manana.getDate() + 1);
+            var yyyy = manana.getFullYear();
+            var mm = String(manana.getMonth() + 1).padStart(2, '0');
+            var dd = String(manana.getDate()).padStart(2, '0');
+            fechaInput.value = yyyy + '-' + mm + '-' + dd;
+            btnManana.classList.add('btn-primary');
+            btnManana.classList.remove('btn-outline-primary');
+            btnHoy.classList.remove('btn-primary');
+            btnHoy.classList.add('btn-outline-primary');
+        });
+        // Remove toggle if user manually changes date
+        fechaInput.addEventListener('input', function () {
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var dd = String(today.getDate()).padStart(2, '0');
+            var todayStr = yyyy + '-' + mm + '-' + dd;
+
+            var manana = new Date();
+            manana.setDate(manana.getDate() + 1);
+            var yyyyM = manana.getFullYear();
+            var mmM = String(manana.getMonth() + 1).padStart(2, '0');
+            var ddM = String(manana.getDate()).padStart(2, '0');
+            var mananaStr = yyyyM + '-' + mmM + '-' + ddM;
+
+            if (fechaInput.value === todayStr) {
+                btnHoy.classList.add('btn-primary');
+                btnHoy.classList.remove('btn-outline-primary');
+                btnManana.classList.remove('btn-primary');
+                btnManana.classList.add('btn-outline-primary');
+            } else if (fechaInput.value === mananaStr) {
+                btnManana.classList.add('btn-primary');
+                btnManana.classList.remove('btn-outline-primary');
+                btnHoy.classList.remove('btn-primary');
+                btnHoy.classList.add('btn-outline-primary');
+            } else {
+                btnHoy.classList.remove('btn-primary');
+                btnHoy.classList.add('btn-outline-primary');
+                btnManana.classList.remove('btn-primary');
+                btnManana.classList.add('btn-outline-primary');
+            }
+        });
+    }
+
     // Edit modal
     var editModal = document.getElementById('editReservaModal');
     editModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
-        document.getElementById('edit_id').value = button.getAttribute('data-id');
-        document.getElementById('edit_fecha').value = button.getAttribute('data-fecha');
-        document.getElementById('edit_hora_inicio').value = button.getAttribute('data-hora_inicio');
-        document.getElementById('edit_hora_fin').value = button.getAttribute('data-hora_fin');
-        document.getElementById('edit_id_estacionamiento').value = button.getAttribute('data-id_estacionamiento');
-        document.getElementById('edit_id_vehiculo').value = button.getAttribute('data-id_vehiculo');
+
+        // Populate estacionamientos select
+        var select = document.getElementById('edit_id_estacionamiento');
+        select.innerHTML = '<option value="">Selecciona uno</option>';
+        estacionamientos.forEach(function(est) {
+            var option = document.createElement('option');
+            option.value = est.id;
+            option.textContent = est.name;
+            select.appendChild(option);
+        });
+
+        // Populate vehiculos select with alias and matricula
+        debugger;
+        var vehiculoSelect = document.getElementById('edit_id_vehiculo');
+        vehiculoSelect.innerHTML = '<option value="">Selecciona uno</option>';
+        vehiculos.forEach(function(veh) {
+            var option = document.createElement('option');
+            option.value = veh.id;
+            option.textContent = (veh.alias ? veh.alias + ' - ' : '') + veh.matricula;
+            // Mark as selected if matches data-id_vehiculo
+            if (
+                button.getAttribute('data-id_vehiculo') &&
+                String(veh.id) === String(button.getAttribute('data-id_vehiculo'))
+            ) {
+                option.selected = true;
+            }
+            vehiculoSelect.appendChild(option);
+        });
+
+        // Set all fields from data attributes
+        document.getElementById('edit_id').value = button.getAttribute('data-id') || '';
+        document.getElementById('edit_fecha').value = button.getAttribute('data-fecha') || '';
+        document.getElementById('edit_hora_inicio').value = button.getAttribute('data-hora_inicio') || '';
+        document.getElementById('edit_hora_fin').value = button.getAttribute('data-hora_fin') || '';
+        select.value = button.getAttribute('data-id_estacionamiento') || '';
+        // vehiculoSelect.value is set above via option.selected
     });
 
     // Delete modal
@@ -339,3 +536,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_reserva'])) {
 ?>
 
 <?php include './partials/layouts/layoutBottom.php'; ?>
+
+

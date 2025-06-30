@@ -18,6 +18,19 @@ $parkings = [];
 try {
     $stmt = $pdo->query("SELECT id, name, address, access_code FROM parking_lots");
     $parkings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Fetch latest estado for each parking lot
+    $estados = [];
+    $stmtEstado = $pdo->query("
+        SELECT parking_id, estado
+        FROM registros_estacionamiento
+        WHERE id IN (
+            SELECT MAX(id) FROM registros_estacionamiento GROUP BY parking_id
+        )
+    ");
+    foreach ($stmtEstado->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $estados[$row['parking_id']] = $row['estado'];
+    }
 } catch (Exception $e) {
     $error = "Error al obtener los estacionamientos: " . $e->getMessage();
 }
@@ -91,18 +104,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_parking'])) {
             <li class="fw-medium">Estacionamientos</li>
         </ul>
     </div>
-</div>
 
-<div class="mb-4">
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addParkingModal">Agregar Estacionamiento</button>
+    <div class="row gy-4">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="card-title mb-0">Estacionamientos</h5>
+                    <button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addParkingModal">Agregar Estacionamiento</button>
+                </div>
+                <div class="card-body">
+                    <?php if ($error): ?>
+                        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+                    <?php endif; ?>
+                    <?php if ($success): ?>
+                        <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+                    <?php endif; ?>
+                    <div class="table-responsive">
+                        <table class="ttable bordered-table mb-0 col-12">
+                            <thead>
+                                <tr class="border-primary-600">
+                                    <th>Nombre</th>
+                                    <th>Dirección</th>
+                                    <th>Código de Acceso</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($parkings as $p): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($p['name']) ?></td>
+                                    <td><?= htmlspecialchars($p['address']) ?></td>
+                                    <td><?= htmlspecialchars($p['access_code']) ?></td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-10 justify-content-center">
+                                            <button 
+                                                type="button"
+                                                class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editParkingModal"
+                                                data-id="<?= $p['id'] ?>"
+                                                data-name="<?= htmlspecialchars($p['name']) ?>"
+                                                data-address="<?= htmlspecialchars($p['address']) ?>"
+                                                data-access_code="<?= htmlspecialchars($p['access_code']) ?>"
+                                                title="Editar"
+                                            >
+                                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                            </button>
+                                            <button 
+                                                type="button"
+                                                class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteParkingModal"
+                                                data-id="<?= $p['id'] ?>"
+                                                title="Eliminar"
+                                            >
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<?php if ($error): ?>
-    <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-<?php endif; ?>
-<?php if ($success): ?>
-    <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-<?php endif; ?>
 
 <!-- Add Parking Modal -->
 <div class="modal fade" id="addParkingModal" tabindex="-1" aria-labelledby="addParkingModalLabel" aria-hidden="true">
@@ -185,52 +254,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_parking'])) {
   </div>
 </div>
 
-<!-- Parkings Table -->
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Dirección</th>
-                <th>Código de Acceso</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($parkings as $p): ?>
-            <tr>
-                <td><?= htmlspecialchars($p['name']) ?></td>
-                <td><?= htmlspecialchars($p['address']) ?></td>
-                <td><?= htmlspecialchars($p['access_code']) ?></td>
-                <td>
-                    <button 
-                        class="btn p-0 text-warning me-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editParkingModal"
-                        data-id="<?= $p['id'] ?>"
-                        data-name="<?= htmlspecialchars($p['name']) ?>"
-                        data-address="<?= htmlspecialchars($p['address']) ?>"
-                        data-access_code="<?= htmlspecialchars($p['access_code']) ?>"
-                        title="Editar"
-                    >
-                        <iconify-icon icon="mdi:pencil" class="icon text-lg"></iconify-icon>
-                    </button>
-                    <button 
-                        class="btn p-0 text-danger"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteParkingModal"
-                        data-id="<?= $p['id'] ?>"
-                        title="Eliminar"
-                    >
-                        <iconify-icon icon="mdi:trash-can" class="icon text-lg"></iconify-icon>
-                    </button>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     // Edit modal
@@ -253,22 +276,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <?php include './partials/layouts/layoutBottom.php'; ?>
-    var editModal = document.getElementById('editParkingModal');
-    editModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        document.getElementById('edit_id').value = button.getAttribute('data-id');
-        document.getElementById('edit_nombre').value = button.getAttribute('data-nombre');
-        document.getElementById('edit_direccion').value = button.getAttribute('data-direccion');
-        document.getElementById('edit_capacidad').value = button.getAttribute('data-capacidad');
-        document.getElementById('edit_estado').value = button.getAttribute('data-estado');
-    });
-
-    // Delete modal
-    var deleteModal = document.getElementById('deleteParkingModal');
-    deleteModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        document.getElementById('delete_id').value = button.getAttribute('data-id');
-    });
 });
 </script>
 
