@@ -21,15 +21,7 @@
                     <h4 class="mb-12">Sign In to your Account</h4>
                     <p class="mb-32 text-secondary-light text-lg">Welcome back! please enter your detail</p>
                 </div>
-                <?php if (isset($_GET['error'])): ?>
-                    <div class="alert alert-danger mb-3">
-                        <?php
-                        if ($_GET['error'] === 'empty') echo 'Please fill in all fields.';
-                        if ($_GET['error'] === 'invalid') echo 'Invalid email or password.';
-                        ?>
-                    </div>
-                <?php endif; ?>
-                <form action="PHP/login.php" method="POST">
+                <form action="PHP/login.php" method="post">
                     <div class="icon-field mb-16">
                         <span class="icon top-50 translate-middle-y">
                             <iconify-icon icon="mdi:phone"></iconify-icon>
@@ -101,3 +93,12 @@
 </body>
 
 </html>
+                        // ========================= Password Show Hide Js End ===========================
+                    </script>';?>
+                    
+<?php include './partials/scripts.php' ?>
+
+</body>
+
+</html>
+
